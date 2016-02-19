@@ -74,11 +74,11 @@ cd "$TMP_DIR"
 tar -czvf "$TMP_TAR_NAME" "$ARC_NAME/"*
 cd -
 
-sudo mount -t cifs "$DEST_SHARE" "$SMB_SHARE_NAME" -o user="$SMB_USER",password="$SMB_PASS"
+mount -t cifs "$DEST_SHARE" "$SMB_SHARE_NAME" -o user="$SMB_USER",password="$SMB_PASS"
 
-sudo mv -f "$TMP_TAR_NAME" "$SMB_SHARE_NAME/$DEST_FILE"
+mv -f "$TMP_TAR_NAME" "$SMB_SHARE_NAME/$DEST_FILE"
 
-sudo unmount "$SMB_SHARE_NAME"
+unmount "$SMB_SHARE_NAME"
 
 rm -rf "$ARC_DIR"
 rm -rf "$TMP_DIR"
