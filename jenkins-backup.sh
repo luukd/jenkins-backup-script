@@ -9,7 +9,7 @@ function usage(){
 readonly JENKINS_HOME=$1
 readonly DEST_FILE=$2
 readonly CUR_DIR=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
-readonly TMP_DIR="/var/jenkins-backup/tmp"
+readonly TMP_DIR="$JENKINS_HOME/jenkins-backup-tmp"
 readonly ARC_NAME="jenkins-backup"
 readonly ARC_DIR="$TMP_DIR/$ARC_NAME"
 readonly TMP_TAR_NAME="$TMP_DIR/archive.tar.gz"
