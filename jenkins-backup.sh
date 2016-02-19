@@ -7,12 +7,16 @@ function usage(){
 ##################################################################################
 
 readonly JENKINS_HOME=$1
-readonly DEST_FILE=$2
+readonly DEST_SHARE=$2
+readonly DEST_FILE=$3
+readonly SMB_USER=$4
+readonly SMB_PASS=$5
 readonly CUR_DIR=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 readonly TMP_DIR="$JENKINS_HOME/jenkins-backup-tmp"
 readonly ARC_NAME="jenkins-backup"
 readonly ARC_DIR="$TMP_DIR/$ARC_NAME"
 readonly TMP_TAR_NAME="$TMP_DIR/archive.tar.gz"
+readonly SMB_SHARE_NAME="/mnt/jenkins_backup_share"
 
 if [ -z "$JENKINS_HOME" -o -z "$DEST_FILE" ] ; then
   usage >&2
@@ -69,7 +73,13 @@ fi
 cd "$TMP_DIR"
 tar -czvf "$TMP_TAR_NAME" "$ARC_NAME/"*
 cd -
-mv -f "$TMP_TAR_NAME" "$DEST_FILE"
+
+mount -t cifs "$DEST_SHARE" "$SMB_SHARE_NAME" -o user="$SMB_USER",password="$SMB_PASS"
+
+mv -f "$TMP_TAR_NAME" "$SMB_SHARE_NAME/$DEST_FILE"
+
+unmount "$SMB_SHARE_NAME"
+
 rm -rf "$ARC_DIR"
 rm -rf "$TMP_DIR"
 
