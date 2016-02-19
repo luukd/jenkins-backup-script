@@ -44,7 +44,14 @@ if [ -d "$JENKINS_HOME/userContent/" ] ; then
 fi
 
 if [ -d "$JENKINS_HOME/nodes/" ] ; then
-  cp -R "$JENKINS_HOME/nodes/"* "$ARC_DIR/nodes"
+  cd "$JENKINS_HOME/nodes/"
+  ls -1 | while read node_name ; do
+    mkdir -p "$ARC_DIR/nodes/$node_name/"
+	cp -R "$JENKINS_HOME/nodes/$node_name/"* "$ARC_DIR/nodes/$node_name/"
+    #find "$JENKINS_HOME/nodes/$node_name/" -maxdepth 1 -name "*.xml" | xargs -I {} cp {} "$ARC_DIR/nodes/$node_name/"
+	
+  done
+  cd -
 fi
 
 if [ -d "$JENKINS_HOME/jobs/" ] ; then
