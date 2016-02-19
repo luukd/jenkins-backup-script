@@ -9,7 +9,7 @@ function usage(){
 readonly JENKINS_HOME=$1
 readonly DEST_FILE=$2
 readonly CUR_DIR=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
-readonly TMP_DIR="$CUR_DIR/tmp"
+readonly TMP_DIR="/var/jenkins-backup/tmp"
 readonly ARC_NAME="jenkins-backup"
 readonly ARC_DIR="$TMP_DIR/$ARC_NAME"
 readonly TMP_TAR_NAME="$TMP_DIR/archive.tar.gz"
@@ -20,6 +20,7 @@ if [ -z "$JENKINS_HOME" -o -z "$DEST_FILE" ] ; then
 fi
 
 rm -rf "$ARC_DIR" "$TMP_TAR_NAME"
+mkdir -p "$TMP_DIR"
 mkdir -p "$ARC_DIR/"{plugins,jobs,users,secrets,userContent,nodes}
 
 cp "$JENKINS_HOME/"*.xml "$ARC_DIR"
@@ -70,5 +71,6 @@ tar -czvf "$TMP_TAR_NAME" "$ARC_NAME/"*
 cd -
 mv -f "$TMP_TAR_NAME" "$DEST_FILE"
 rm -rf "$ARC_DIR"
+rm -rf "$TMP_DIR"
 
 exit 0
